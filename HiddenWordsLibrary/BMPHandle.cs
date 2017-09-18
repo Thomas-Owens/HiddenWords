@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HiddenWordsLibrary;
 
 namespace HiddenWordsLibrary
 {
@@ -52,23 +55,9 @@ namespace HiddenWordsLibrary
         {
 
             // Lock the bits
-            byte[] RGBValues = LockAndSerializeBits();
-            byte[] ASCIIValu = StringToChomp();
-            // Begin Encoding Hell???????
-
-        }
-
-        public byte[] StringToChomp()
-        {
-            return Encoding.ASCII.GetBytes(ThroughText); // populates an array  with the byte values, immediately throws elsewhere. 
-            // i didnt need this as its own function but w/e
-        }
-
-        public byte[] LockAndSerializeBits()
-        {
             // made with help of MSDN!
             Rectangle rect = new Rectangle(0, 0, InternalImage.Width, InternalImage.Height);
-            System.Drawing.Imaging.BitmapData bmpData = InternalImage.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite, InternalImage.PixelFormat);
+            BitmapData bmpData = InternalImage.LockBits(rect, ImageLockMode.ReadWrite, InternalImage.PixelFormat);
 
             // get address of line 1
             IntPtr ptr = bmpData.Scan0;
@@ -80,8 +69,35 @@ namespace HiddenWordsLibrary
             // populate array so it now holds the RGB values for the entire bitmap
             System.Runtime.InteropServices.Marshal.Copy(ptr, RGBValues, 0, bytes);
 
-            // return said array of RGB
-            return RGBValues;
+            
+            byte[] ASCIIValu = Encoding.ASCII.GetBytes(ThroughText); // populates an array  with the byte values, immediately throws elsewhere. 
+
+            // Convert to bit arrays for #convience, keep the old ones around so we can throw them back properly. 
+            BitArray bitColors = new BitArray(RGBValues);
+            BitArray bitLetter = new BitArray(ASCIIValu);
+
+            // the future plan is to make this a robust, Dynamic encoding system based on user input, 
+            // manipulating designated bits with varying density to provide different results. 
+            // for the sake of proof of concept, this is just going to manipulate the Least Significant Bit of the B value. Hopefully. 
+
+            int RGBcounter = 23; // this value is the First Place we're shoving data. hopefully nothing dumb happens. 
+            for (int i = 0; i < bitLetter.Count; i++)
+            {
+                // keeps track of what bit in bitLetter we are currently working on. 
+                bitColors[RGBcounter] = bitLetter[i];
+                RGBcounter += 24;
+            }
+            RGBValues = Functions.ConvertToByte(bitColors);
+
+            // copy back to the bitmap
+            System.Runtime.InteropServices.Marshal.Copy(RGBValues, 0, ptr, bytes);
+
+            // unlock bits
+            InternalImage.UnlockBits(bmpData);
+
+            // draw image (this is rendering i think?)
+            e.Graphics.DrawImage(bmp, 0, 150);
+
         }
 
         // -- End Functions -- //
