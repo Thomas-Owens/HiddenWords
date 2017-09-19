@@ -25,9 +25,24 @@ namespace UnitTestProject
         }
 
         [TestMethod]
-        public void ConvertToByteTruthyness()
+        public void ConvertToByteTruthyness1()
         {
+            // soon TM
+            BitArray TestBob = new BitArray(8, false);
+            byte[] Bishop = Functions.ConvertToByte(TestBob);
+            byte zeros = 0b0000_0000;
+            Assert.AreEqual(zeros, Bishop[0]);
+        }
 
+        [TestMethod]
+        public void ConvertToByteTruthyness2()
+        {
+            // soon TM
+            bool[] testBill = new bool[] { true, true, false, false, true, true, false, false };
+            BitArray TestBob = new BitArray(testBill);
+            byte[] Bishop = Functions.ConvertToByte(TestBob);
+            byte beeps = 0b1100_1100;
+            Assert.AreEqual(beeps, Bishop[0]);
         }
     }
 }
