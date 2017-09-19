@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections;
 using HiddenWordsLibrary;
 
-namespace HiddenWordsUnitTests
+namespace UnitTestProject
 {
     [TestClass]
     public class UnitTests
@@ -13,7 +13,7 @@ namespace HiddenWordsUnitTests
         public void ConvertToByteBitTooSmallTest()
         {
             BitArray TestBob = new BitArray(7, false);
-            ConvertToByte(TestBob);
+            byte[] Bishop = Functions.ConvertToByte(TestBob);
         }
 
         [TestMethod]
@@ -21,7 +21,13 @@ namespace HiddenWordsUnitTests
         public void ConvertToByteBitTooBigTest()
         {
             BitArray TestBob = new BitArray(9, false);
-            ConvertToByte(TestBob)
+            byte[] Bishop = Functions.ConvertToByte(TestBob);
+        }
+
+        [TestMethod]
+        public void ConvertToByteTruthyness()
+        {
+
         }
     }
 }
