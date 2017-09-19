@@ -38,7 +38,7 @@ namespace UnitTestProject
         public void ConvertToByteTruthyness2()
         {
             // soon TM
-            bool[] testBill = new bool[] { true, true, false, false, true, true, false, false };
+            bool[] testBill = new bool[] { false, false, true, true, false, false, true, true };
             BitArray TestBob = new BitArray(testBill);
             byte[] Bishop = Functions.ConvertToByte(TestBob);
             byte beeps = 0b1100_1100;
