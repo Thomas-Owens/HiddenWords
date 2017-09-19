@@ -10,7 +10,7 @@ using HiddenWordsLibrary;
 
 namespace HiddenWordsLibrary
 {
-    class BMPHandle
+    public class BMPHandle
     {
         // because i have a GIANT HARDON for MVC, we're using a class to encapsulate the bitmap class, and hopefully encoding shit. 
         // IDK what functions will go here instead of Functions.cs but HEYYYY hopefully this dices out right. 
@@ -19,8 +19,8 @@ namespace HiddenWordsLibrary
 
 
         // -- Fields -- //
-        private Bitmap InternalImage;
-        private string ThroughText = string.Empty;
+        public Bitmap InternalImage;
+        public string ThroughText = string.Empty;
         // -- end Fields -- //
 
 
@@ -44,6 +44,11 @@ namespace HiddenWordsLibrary
             ThroughText = Text;
         }
         public BMPHandle(Bitmap Image, String Text)
+        {
+            InternalImage = new Bitmap(Image);
+            ThroughText = Text;
+        }
+        public BMPHandle(Image Image, String Text)
         {
             InternalImage = new Bitmap(Image);
             ThroughText = Text;
@@ -94,10 +99,12 @@ namespace HiddenWordsLibrary
 
             // unlock bits
             InternalImage.UnlockBits(bmpData);
+            
+        }
 
-            // draw image (this is rendering i think?)
-            e.Graphics.DrawImage(bmp, 0, 150);
-
+        public void saveImage(string location)
+        {
+            InternalImage.Save(location, ImageFormat.Bmp);
         }
 
         // -- End Functions -- //
