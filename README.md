@@ -1,5 +1,6 @@
 # HiddenWords
 A project attempting to use a lossless picture format to hide data (text) within a picture.
+This project was abandoned for the better part of a year, a potiential partner dropped interest early on, life got busy. I'm ressurecting it because working customer service actually just sucks. 
 
 # Goals:
 1. Produce a functional Text to ASCII converter. This has been done before, and might be done through a library instead. 
